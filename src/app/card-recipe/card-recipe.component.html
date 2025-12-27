@@ -1,0 +1,38 @@
+<div class="h-full bg-gradient-to-br from-zinc-900 to-zinc-950 border border-zinc-700 rounded-xl p-5 hover:border-rune-gold/50 transition-all duration-300 shadow-lg hover:shadow-rune-gold/10">
+  <div class="flex flex-wrap gap-6 items-start">
+    <!-- Recipe Data -->
+    <div class="flex flex-col gap-3 min-w-[180px]">
+      <h3 class="text-rune-gold font-bold text-lg underline underline-offset-4 decoration-rune-gold/50">
+        {{recipe.title}}
+      </h3>
+      <p class="text-zinc-300 text-sm">{{arms}}</p>
+      <p class="text-rune-gold/70 text-xs italic">{{recipe.numberHole}}</p>
+
+      <!-- Runes List -->
+      <div class="flex flex-col gap-2 mt-2">
+        <div
+          *ngFor="let item of listRunes"
+          class="flex text-zinc-400 items-center gap-3 text-sm transition-all duration-200"
+          [ngClass]="{
+            'opacity-40': !item.status && showStatus,
+            '!text-gold font-semibold': item.status && showStatus,
+            'text-zinc-200': !showStatus
+          }"
+        >
+          <img [src]="item.img" alt="rune" class="w-7 h-7 rounded shadow-sm">
+          <span>{{item.name}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="flex flex-col gap-1 flex-1 max-w-lg">
+      <p
+        *ngFor="let item of recipe.features"
+        class="text-wheat text-sm leading-relaxed"
+      >
+        {{item}}
+      </p>
+    </div>
+  </div>
+</div>
