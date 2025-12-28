@@ -11,7 +11,7 @@
 </header>
 
 <!-- Main Content -->
-<main class="min-h-screen bg-gradient-to-b from-black via-zinc-950 to-black px-4 py-8">
+<main class="min-h-screen bg-linear-to-br from-black via-zinc-950 to-black px-4 py-8">
   <div class="max-w-7xl mx-auto">
     <!-- Title Section -->
     <div class="text-center mb-8">
@@ -85,11 +85,18 @@
           Resultados: <span class="text-rune-gold">{{recipes.main.length}}</span>
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          @for(recipe of recipes.main; track recipe.id) {
+          @for(recipe of recipes.main; track $index) {
             <div>
               <d-card-recipe [recipe]="recipe" [showStatus]="showStatus"></d-card-recipe>
             </div>
+          } @empty {
+            <div class="col-span-2">
+              <div class="flex justify-center items-center h-full">
+                <p class="text-zinc-400">No se encontraron resultados</p>
+              </div>
+            </div>
           }
+
         </div>
       </section>
 
@@ -101,11 +108,18 @@
           Sugerencias: <span class="text-zinc-400">{{recipes.suggestions.length}}</span>
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-          @for(recipe of recipes.suggestions; track recipe.id) {
+          @for(recipe of recipes.suggestions; track $index) {
             <div>
             <d-card-recipe [recipe]="recipe" [showStatus]="showStatus"></d-card-recipe>
             </div>
+          } @empty {
+            <div class="col-span-2">
+              <div class="flex justify-center items-center h-full">
+                <p class="text-zinc-400">No se encontraron sugerencias</p>
+              </div>
+            </div>
           }
+
           </div>
         </section>
       }

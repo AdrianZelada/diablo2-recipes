@@ -25,7 +25,7 @@ export class App {
   selectedTab: string = 'all';
   typesTabs: Array<string> = ['Escudos', 'Cascos', 'Armas', 'Armaduras'];
   typesItems: Array<Array<string>> = [['escudos','escudo'],['cascos'], ['vara','armas','hachas','mazas','cetros','espadas','bastones','martillos','garras','lanzas'], ['armaduras','armadura']];
-  index: number = 0;
+  index: number = -1;
   constructor(
     private _recipesService: RecipesService,
     private _runesService: RunesService,
@@ -40,6 +40,7 @@ export class App {
     const catalogs = this._recipesService.getCatalogs();
 
     this._recipesService.recipesSubject.subscribe((recipes: ViewRecipes) => {
+      console.log('recipes',recipes);
       this.recipes = {
         ...recipes
       }
@@ -57,7 +58,7 @@ export class App {
       arm: []
     }
 
-    this._recipesService.filterRecipes(filter);
+    // this._recipesService.filterRecipes(filter);
   }
 
   selectRune(rune: any) {

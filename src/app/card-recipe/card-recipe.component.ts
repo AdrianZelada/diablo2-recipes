@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, computed, input, Input, OnInit } from '@angular/core';
 import { RunesService } from '../services/runes.service';
 import { CommonModule } from '@angular/common';
 
@@ -8,24 +8,32 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./card-recipe.component.scss'],
   imports: [CommonModule]
 })
-export class CardRecipeComponent implements OnInit {
+export class CardRecipeComponent {
 
-  @Input() recipe: any = {};
+  // @Input() recipe: any = {};
+
+  recipe = input<any>({});
   @Input() showStatus: boolean = false;
-  listRunes: Array<any> = [];
-  arms: string = '';
-  constructor(
-    private _runesService: RunesService
-  ) { }
-
-  ngOnInit(): void {
-    this.listRunes = this.recipe.runes.map((item: any) => {
+  // listRunes: Array<any> = [];
+  listRunes = computed(() => {
+    return this.recipe().runes?.map((item: any) => {
       return {
         ...item,
         img: this._runesService.buildNameImage(item.name)
       }
-    });
-    this.arms = this.recipe.arm.join(', ');
+    }) || [];
+  });
+
+  // arms: string = '';
+
+  arms = computed(() => {
+    return this.recipe().arm?.join(', ') || '';
+  });
+
+  constructor(
+    private _runesService: RunesService
+  ) { 
+
   }
 
 }

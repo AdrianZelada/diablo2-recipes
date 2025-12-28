@@ -6,7 +6,7 @@ import { RECIPES } from '../../stores/recipes';
 
 @Injectable({providedIn: 'root'})
 export class RecipesService {
-  private typesItems: Array<Array<string>> = [['escudos','escudo'],['cascos'], ['vara','armas','hachas','mazas','cetros','espadas','bastones','martillos','garras','lanzas'], ['armaduras','armadura']];
+  private typesItems: Array<Array<string>> = [['escudos','escudo'],['cascos'], ['vara','armas','hachas','mazas','cetros','espadas','bastones','martillos','garras','lanzas','armas cuerpo a cuerpo'], ['armaduras','armadura']];
   public recipes: ViewRecipes = {main: RECIPES, suggestions: []};
   private _recipesSubject: BehaviorSubject<ViewRecipes> = new BehaviorSubject(this.recipes);
   public recipesSubject: Observable<ViewRecipes> = this._recipesSubject.asObservable();
@@ -36,7 +36,13 @@ export class RecipesService {
         suggestions: []
       }
       RECIPES.forEach((recipe: any) => {
+        console.log(recipe.title);
+        if(recipe.title == 'Maldad') {
+          console.log('recipe',recipe);
+          console.log('filter',filter);
+        }
         const runeFilter = this.filterRune(filter.runes || [], recipe.runes);
+
         const armFilter = this.filterArm(filter.arm || [], recipe.arm);
         const holeFilter = this.filterHoles(filter.holes || 0, recipe.holes);
         if(runeFilter.isMain && armFilter.isMain && holeFilter.isMain) {
@@ -92,6 +98,8 @@ export class RecipesService {
   filterArm(arm: Array<string>, armRecipe: Array<string>) {
     // const status = arm.length == 0 ? true : armRecipe.some((armItem: string) => arm.some((armItemFilter: string) => armItemFilter.toLowerCase() == armItem.toLowerCase()));
     const status = arm.length == 0 ? true : armRecipe.some((armItem: string) => arm.some((armItemFilter: string) => {
+      console.log(armRecipe);
+      console.log(armItem, armItemFilter);
       return armItem.toLowerCase().indexOf(armItemFilter.toLowerCase()) != -1;
     }));
     return {
