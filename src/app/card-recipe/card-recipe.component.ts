@@ -1,4 +1,4 @@
-import { Component, computed, input, Input, OnInit } from '@angular/core';
+import { Component, computed, input, Input } from '@angular/core';
 import { RunesService } from '../services/runes.service';
 import { CommonModule } from '@angular/common';
 
@@ -10,11 +10,8 @@ import { CommonModule } from '@angular/common';
 })
 export class CardRecipeComponent {
 
-  // @Input() recipe: any = {};
-
   recipe = input<any>({});
   @Input() showStatus: boolean = false;
-  // listRunes: Array<any> = [];
   listRunes = computed(() => {
     return this.recipe().runes?.map((item: any) => {
       return {
@@ -23,8 +20,6 @@ export class CardRecipeComponent {
       }
     }) || [];
   });
-
-  // arms: string = '';
 
   arms = computed(() => {
     return this.recipe().arm?.join(', ') || '';
