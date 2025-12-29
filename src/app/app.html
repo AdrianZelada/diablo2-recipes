@@ -1,5 +1,5 @@
 <!-- Header/Toolbar -->
-<header class=" from-zinc-900 via-zinc-800 to-zinc-900 border-b border-rune-gold/30 shadow-lg">
+<header class=" from-zinc-900 via-zinc-800 to-zinc-900 border-b border-rune-gold/30 shadow-lg flex justify-between items-center">
   <div class="px-4 py-4 flex items-center gap-4">
     <img
       class="w-12 h-12 rounded-lg shadow-md"
@@ -8,6 +8,14 @@
     />
     <h1 class="text-2xl font-bold text-rune-gold tracking-wide">Horadrim Pub</h1>
   </div>
+  <div class="flex items-center gap-4 px-4 py-4 ">
+    <span class="text-zinc-400">{{'language' | translate}}</span>
+    <select (change)="changeLanguage($event)" class="bg-zinc-800 text-zinc-400 rounded-lg px-4 py-2">
+      <option value="en" [selected]="language === 'en'">English</option>
+      <option value="es" [selected]="language === 'es'">Español</option>
+    </select>
+
+  </div>
 </header>
 
 <!-- Main Content -->
@@ -15,8 +23,8 @@
   <div class="max-w-7xl mx-auto">
     <!-- Title Section -->
     <div class="text-center mb-8">
-      <h2 class="text-3xl font-bold text-wheat mb-2">Palabras Rúnicas</h2>
-      <p class="text-zinc-400">Seleccione las runas para encontrar recetas</p>
+      <h2 class="text-3xl font-bold text-wheat mb-2">{{'title' | translate}}</h2>
+      <p class="text-zinc-400">{{'selectRunes' | translate}}</p>
     </div>
 
     <!-- Rune Selector -->
@@ -47,7 +55,7 @@
         }"
       >
         <span class="flex items-center gap-2">
-          Todos
+          {{'all' | translate}}
          
         </span>
         @if(selectedTab === 'all') {
@@ -65,7 +73,7 @@
           }"
         >
           <span class="flex items-center gap-2">
-            {{tab}}
+            {{ tab | translate}}
            
           </span>
           @if(selectedTab === tab) {
@@ -82,7 +90,7 @@
       <section>
         <h2 class="text-xl font-semibold text-wheat mb-4 flex items-center gap-2">
           <span class="w-2 h-2 bg-rune-gold rounded-full"></span>
-          Resultados: <span class="text-rune-gold">{{recipes.main.length}}</span>
+          {{'results' | translate}}: <span class="text-rune-gold">{{recipes.main.length}}</span>
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           @for(recipe of recipes.main; track $index) {
@@ -92,7 +100,7 @@
           } @empty {
             <div class="col-span-2">
               <div class="flex justify-center items-center h-full">
-                <p class="text-zinc-400">No se encontraron resultados</p>
+                <p class="text-zinc-400">{{'notResults' | translate}}</p>
               </div>
             </div>
           }
@@ -105,7 +113,7 @@
       <section>
         <h2 class="text-xl font-semibold text-wheat mb-4 flex items-center gap-2">
           <span class="w-2 h-2 bg-zinc-500 rounded-full"></span>
-          Sugerencias: <span class="text-zinc-400">{{recipes.suggestions.length}}</span>
+          {{'suggestions' | translate}}: <span class="text-zinc-400">{{recipes.suggestions.length}}</span>
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           @for(recipe of recipes.suggestions; track $index) {
@@ -115,7 +123,7 @@
           } @empty {
             <div class="col-span-2">
               <div class="flex justify-center items-center h-full">
-                <p class="text-zinc-400">No se encontraron sugerencias</p>
+                <p class="text-zinc-400">{{'notResults' | translate}}</p>
               </div>
             </div>
           }

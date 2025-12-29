@@ -2,13 +2,16 @@ import { Injectable } from '@angular/core';
 import { uniq } from 'lodash-es';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Catalogs, FilterRecipes, ViewRecipes } from './interfaces';
-import { RECIPES } from '../../stores/recipes';
+import { RECIPES, RECIPES_EN } from '../../stores/recipes';
 
 @Injectable({providedIn: 'root'})
 export class RecipesService {
   private typesItems: Array<Array<string>> = [['escudos','escudo'],['cascos'], ['vara','armas','hachas','mazas','cetros','espadas','bastones','martillos','garras','lanzas','armas cuerpo a cuerpo'], ['armaduras','armadura']];
   public recipes: ViewRecipes = {main: RECIPES, suggestions: []};
-  private _recipesSubject: BehaviorSubject<ViewRecipes> = new BehaviorSubject(this.recipes);
+  private _recipesSubject: BehaviorSubject<ViewRecipes> = new BehaviorSubject<ViewRecipes>({
+    main: [],
+    suggestions: []
+  });
   public recipesSubject: Observable<ViewRecipes> = this._recipesSubject.asObservable();
   constructor() {
   }
@@ -29,29 +32,36 @@ export class RecipesService {
 
   filterRecipes(filter: FilterRecipes) {
     if(filter.runes?.length == 0 && filter.arm?.length == 0 && filter.holes == null) {
-      this._recipesSubject.next(this.recipes);
+      if(filter.language == 'en') {
+        this._recipesSubject.next({
+          main: RECIPES_EN,
+          suggestions: []
+        });
+      } else {
+        this._recipesSubject.next(this.recipes);
+      }
     } else {
       const recipes: ViewRecipes =  {
         main: [],
         suggestions: []
       }
-      RECIPES.forEach((recipe: any) => {
+      RECIPES.forEach((recipe: any, index: number) => {
         const runeFilter = this.filterRune(filter.runes || [], recipe.runes);
         const armFilter = this.filterArm(filter.arm || [], recipe.arm);
         const holeFilter = this.filterHoles(filter.holes || 0, recipe.holes);
         if(runeFilter.isMain && armFilter.isMain && holeFilter.isMain) {
-          recipes.main.push(
-            {
-              ...recipe,
-              runes: [
-                ...runeFilter.runes
-              ]
-            }
-          )
-        } else {
-          // if(runeFilter.count >= 1 && ( armFilter.isMain || holeFilter.isMain)) {
-          if(runeFilter.count >= 1 && armFilter.isMain ) {
-            recipes.suggestions.push(
+          if(filter.language == 'en') {
+            const recipeEn = RECIPES_EN[index];
+            recipes.main.push(
+              {
+                ...recipeEn,
+                runes: [
+                  ...runeFilter.runes
+                ]
+              }
+            )
+          } else {
+            recipes.main.push(
               {
                 ...recipe,
                 runes: [
@@ -59,6 +69,31 @@ export class RecipesService {
                 ]
               }
             )
+          }
+          
+        } else {
+          // if(runeFilter.count >= 1 && ( armFilter.isMain || holeFilter.isMain)) {
+          if(runeFilter.count >= 1 && armFilter.isMain ) {
+            if(filter.language == 'en') {
+              const recipeEn = RECIPES_EN[index];
+              recipes.suggestions.push(
+                {
+                  ...recipeEn,
+                  runes: [
+                    ...runeFilter.runes
+                  ]
+                }
+              )
+            } else {
+              recipes.suggestions.push(
+              {
+                ...recipe,
+                runes: [
+                  ...runeFilter.runes
+                ]
+              }
+            )
+            }
           }
         }
       });

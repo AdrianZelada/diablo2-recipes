@@ -12,4 +12,5 @@ export interface FilterRecipes{
   runes?: Array<string>;
   arm?: Array<string>;
   holes?: number;
+  language?: string;
 }

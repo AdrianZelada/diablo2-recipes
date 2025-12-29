@@ -4,10 +4,11 @@ import { RunesService } from './services/runes.service';
 import { FilterRecipes, ViewRecipes } from './services/interfaces';
 import { CardRecipeComponent } from './card-recipe/card-recipe.component';
 import { CommonModule } from '@angular/common';
+import { LangChangeEvent, TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
-  imports: [CardRecipeComponent, CommonModule],
+  imports: [CardRecipeComponent, CommonModule, TranslateModule],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
@@ -21,12 +22,14 @@ export class App {
   };
   showStatus: boolean = false;
   selectedTab: string = 'all';
-  typesTabs: Array<string> = ['Escudos', 'Cascos', 'Armas', 'Armaduras'];
+  typesTabs: Array<string> = ['shields', 'helmets', 'weapons', 'armors'];
   typesItems: Array<Array<string>> = [['escudos','escudo'],['cascos'], ['vara','armas','hachas','mazas','cetros','espadas','bastones','martillos','garras','lanzas'], ['armaduras','armadura']];
   index: number = -1;
+  language: string = 'en';
   constructor(
     private _recipesService: RecipesService,
-    private _runesService: RunesService
+    private _runesService: RunesService,
+    private _translateService: TranslateService
   ) {
     this._runesService.getData().subscribe((runes) => {
       this.runes = runes;
@@ -36,6 +39,15 @@ export class App {
       this.recipes = {
         ...recipes
       }
+    });
+    this._translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+      this.language = event.lang;
+      const filter: FilterRecipes = {
+        runes: Object.keys(this.mapRunes),
+        arm: Object.keys(this.mapRunes).length > 0 ? (this.index == -1 ? [] : this.typesItems[this.index]) : [],
+        language: this.language
+      }
+      this._recipesService.filterRecipes(filter);
     });
   }
 
@@ -48,7 +60,8 @@ export class App {
     const runes = Object.keys(this.mapRunes);
     const filter: FilterRecipes = {
       runes: runes,
-      arm: runes.length > 0 ? (this.index == -1 ? [] : this.typesItems[this.index]) : []
+      arm: runes.length > 0 ? (this.index == -1 ? [] : this.typesItems[this.index]) : [],
+      language: this.language
     }
 
     this.showStatus = runes.length > 0;
@@ -63,10 +76,15 @@ export class App {
     const runes = Object.keys(this.mapRunes);
     const filter: FilterRecipes = {
       runes: runes,
-      arm: runes.length > 0 ? (i == -1 ? [] : this.typesItems[i]) : this.typesItems[i]
+      arm: runes.length > 0 ? (i == -1 ? [] : this.typesItems[i]) : this.typesItems[i],
+      language: this.language
     }
     this._recipesService.filterRecipes(filter);
     this.showStatus = runes.length > 0;
   }
 
+  changeLanguage(event: Event) {
+    const target = event.target as HTMLSelectElement;
+    this._translateService.use(target.value);
+  }
 }
