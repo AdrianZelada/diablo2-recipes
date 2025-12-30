@@ -6,7 +6,8 @@
       alt="Horadrim Logo"
       src="./img/decar.png"
     />
-    <h1 class="hidden md:block text-2xl font-bold text-rune-gold tracking-wide">Horadrim Pub {{version}}</h1>
+    <h1 class="hidden md:block text-2xl font-bold text-rune-gold tracking-wide">Diablo 2 Recipes - {{version}}</h1>
+    <p class="block md:hidden text-xs font-bold text-rune-gold tracking-wide">Diablo 2 Recipes - {{version}}</p>
   </div>
   <div class="flex items-center gap-4 px-4 py-4 ">
     <span class="hidden md:block text-zinc-400">{{'language' | translate}}</span>
@@ -45,10 +46,10 @@
     </div>
 
     <div class="mb-8">
-      <div class="flex flex-wrap border-b border-zinc-700">
+      <div class="flex flex-wrap border-b border-zinc-700 pb-2">
         <button
         (click)="selectTab('all',-1)"
-        class="relative px-6 py-3 text-sm font-medium transition-all duration-200"
+        class="relative px-6 py-3 text-sm font-medium transition-all duration-200 border-b border-zinc-800 border-r border-r-zinc-900 rounded-br-md"
         [ngClass]="{
           'text-rune-gold': selectedTab === 'all',
           'text-zinc-400 hover:text-zinc-200': selectedTab !== 'all'
@@ -66,7 +67,7 @@
         @for(tab of typesTabs; track $index) {
         <button
           (click)="selectTab(tab, $index)"
-          class="relative px-6 py-3 text-sm font-medium transition-all duration-200"
+          class="relative px-6 py-3 text-sm font-medium transition-all duration-200 border-b border-zinc-800 border-r border-r-zinc-900 rounded-br-md"
           [ngClass]="{
             'text-rune-gold': selectedTab === tab,
             'text-zinc-400 hover:text-zinc-200': selectedTab !== tab
