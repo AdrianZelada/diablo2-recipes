@@ -26,7 +26,7 @@ export class App {
   typesItems: Array<Array<string>> = [['escudos','escudo'],['cascos'], ['vara','armas','hachas','mazas','cetros','espadas','bastones','martillos','garras','lanzas'], ['armaduras','armadura']];
   index: number = -1;
   language: string = 'en';
-  version: string = '1.0.1';
+  version: string = '1.0.2';
   constructor(
     private _recipesService: RecipesService,
     private _runesService: RunesService,
